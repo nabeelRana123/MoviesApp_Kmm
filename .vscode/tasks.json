@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build and Run Movies App",
+			"type": "shell",
+			"command": "./gradlew",
+			"args": [
+				"androidApp:assembleDebug"
+			],
+			"group": "build"
+		}
+	]
+}
