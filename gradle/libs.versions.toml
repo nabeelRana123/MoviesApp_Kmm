@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.1"
+agp = "8.6.0"
 kotlin = "2.1.20"
 compose = "1.8.2"
 compose-multiplatform = "1.8.2"
@@ -8,14 +8,17 @@ androidx-activityCompose = "1.10.1"
 kotlinxCoroutinesCore = "1.7.3"
 kotlinxSerializationJson = "1.6.2"
 ktorClientCore = "3.1.0"
-lifecycleViewmodel = "2.8.4"
+lifecycleViewmodel = "2.8.0"
 coil = "3.2.0"
 koinCore = "4.0.0"
 glancePreview = "1.1.1"
+navigation = "2.8.4"
+navigationCompose = "2.8.0-alpha08"  # Use a stable JetBrains navigation version
 
 [libraries]
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+jetbrains-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinCore" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-androidx-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCore" }
@@ -42,6 +45,9 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt:coil-network-ktor", version.ref = "coil" }
 
+# Navigation
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 androidx-glance-preview = { group = "androidx.glance", name = "glance-preview", version.ref = "glancePreview" }
 
@@ -54,4 +60,3 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-

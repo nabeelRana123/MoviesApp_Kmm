@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.invoke
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -19,13 +21,16 @@ kotlin {
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
             baseName = "shared"
             isStatic = true
             
-            // Set explicit bundle ID for iOS framework
+            // Set explicit bundle ID to resolve warning
             binaryOption("bundleId", "com.dev.moviesappkmm.shared")
+
+            // Export all necessary dependencies for iOS
+            export(libs.jetbrains.navigation.compose)
         }
     }
 
@@ -44,16 +49,14 @@ kotlin {
             implementation(compose.animation)
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
-           // implementation(libs.ktor.client.timeout)  // Add this line
 
-            //implementation(libs.ktor.client.okhttp)
-//            implementation(libs.ktor.client.darwin)
             // Kotlinx Serialization
             implementation(libs.kotlinx.serialization.json)
 
@@ -65,21 +68,24 @@ kotlin {
             implementation(libs.coil3.coil.compose)
             implementation(libs.coil.network.okhttp)
 
+            // navigation - JetBrains Compose Multiplatform Navigation
+            api(libs.jetbrains.navigation.compose)  // Use api() to make it available to iOS
         }
 
         androidMain.dependencies {
+            //ktor android
             implementation(libs.ktor.client.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(compose.uiTooling)
 
-            implementation(libs.koin.composeVM)
+            // koin android - remove duplicates
             implementation(libs.koin.android)
-            implementation(libs.koin.android)
-
         }
         
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
@@ -88,7 +94,7 @@ kotlin {
 
 android {
     namespace = "com.dev.moviesappkmm"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }
@@ -97,6 +103,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+
 dependencies {
     implementation(libs.androidx.glance.preview)
 }

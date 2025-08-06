@@ -57,44 +57,33 @@ private fun SafeMoviesApp() {
         }
     }
     
-    MoviesAppTheme {
+    MaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            SafeHomeScreen()
+            MoviesNavigation()
         }
     }
-}
-
-@Composable
-private fun SafeHomeScreen() {
-    HomeScreen()
 }
 
 @Composable
 private fun ErrorFallbackScreen(message: String) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Something went wrong\n$message",
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
-    }
-}
-
-@Composable
-private fun MoviesAppTheme(
-    content: @Composable () -> Unit
-) {
     MaterialTheme {
-        content()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
     }
 }

@@ -20,10 +20,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Calendar
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +35,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,11 +50,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.glance.preview.Preview
 import coil3.compose.AsyncImage
 import com.dev.moviesappkmm.data.Movie
+import com.dev.moviesappkmm.presentation.MoviesViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.round
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // Helper function to format rating
 private fun formatRating(rating: Double): String {
@@ -86,6 +88,37 @@ private fun formatReleaseDate(dateString: String): String {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailScreen(
+    movieId: Int,
+    viewModel: MoviesViewModel,
+    onBackClick: () -> Unit
+) {
+    val selectedMovie by viewModel.selectedMovie.collectAsState()
+
+    // Try to get the movie from selected movie first, then by ID
+    val movie = selectedMovie ?: viewModel.getMovieById(movieId)
+
+    if (movie != null) {
+        MovieDetailScreen(
+            movie = movie,
+            onBackPressed = onBackClick
+        )
+    } else {
+        // Show loading or error state if movie not found
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Movie not found",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MovieDetailScreen(
     movie: Movie,
     onBackPressed: () -> Unit
 ) {
@@ -111,7 +144,7 @@ fun MovieDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.Default.ArrowBackIosNew,
                             contentDescription = "Back",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
@@ -286,7 +319,7 @@ private fun MovieInfoSection(movie: Movie) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = ImageVector.Builder().,
+                        imageVector = Icons.Filled.CalendarMonth,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
@@ -338,7 +371,7 @@ private fun OverviewSection(movie: Movie) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
         )
@@ -359,16 +392,14 @@ private fun OverviewSection(movie: Movie) {
                 text = movie.overview.ifBlank { "No overview available for this movie." },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                textAlign = TextAlign.Justify,
-                lineHeight = MaterialTheme.typography.bodyLarge.lineHeight * 1.2
+                textAlign = TextAlign.Justify
             )
         }
     }
 }
 
-import androidx.compose.ui.tooling.preview.Preview
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun MovieDetailScreenPreview() {
     val sampleMovie = Movie(
@@ -389,7 +420,7 @@ private fun MovieDetailScreenPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun BackdropSectionPreview() {
     val sampleMovie = Movie(
@@ -407,7 +438,7 @@ private fun BackdropSectionPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun MovieInfoSectionPreview() {
     val sampleMovie = Movie(
@@ -425,7 +456,7 @@ private fun MovieInfoSectionPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun OverviewSectionPreview() {
     val sampleMovie = Movie(
