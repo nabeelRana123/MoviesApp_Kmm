@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.dev.moviesappkmm.android"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
     }
@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.navigation.compose)
     debugImplementation(libs.compose.ui.tooling)
 
     implementation(libs.koin.composeVM)

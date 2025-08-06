@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.invoke
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -45,6 +47,8 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
 
+            implementation(compose.components.uiToolingPreview)
+
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -68,9 +72,12 @@ kotlin {
         }
 
         androidMain.dependencies {
+            //ktor android
             implementation(libs.ktor.client.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(compose.uiTooling)          // most cases
 
+            // koin android
             implementation(libs.koin.composeVM)
             implementation(libs.koin.android)
             implementation(libs.koin.android)
@@ -88,7 +95,7 @@ kotlin {
 
 android {
     namespace = "com.dev.moviesappkmm"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }

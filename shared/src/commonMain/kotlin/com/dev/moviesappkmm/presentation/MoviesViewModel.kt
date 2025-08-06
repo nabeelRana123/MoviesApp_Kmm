@@ -21,6 +21,9 @@ class MoviesViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _selectedMovie = MutableStateFlow<Movie?>(null)
+    val selectedMovie: StateFlow<Movie?> = _selectedMovie.asStateFlow()
+
     fun loadPopularMovies() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -49,5 +52,13 @@ class MoviesViewModel(
             )
             _isLoading.value = false
         }
+    }
+
+    fun selectMovie(movie: Movie) {
+        _selectedMovie.value = movie
+    }
+
+    fun getMovieById(movieId: Int): Movie? {
+        return _movies.value.find { it.id == movieId }
     }
 }

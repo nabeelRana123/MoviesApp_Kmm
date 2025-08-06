@@ -88,7 +88,8 @@ private fun formatRating(rating: Double): String {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: MoviesViewModel = koinViewModel()
+    viewModel: MoviesViewModel = koinViewModel(),
+    onMovieClick: (Movie) -> Unit = {}
 ) {
     val movies by viewModel.movies.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -180,7 +181,7 @@ fun HomeScreen(
             if (isLoading) {
                 LoadingScreen()
             } else {
-                MoviesList(movies = movies)
+                MoviesList(movies = movies, onMovieClick = onMovieClick)
             }
         }
     }
@@ -234,18 +235,19 @@ private fun LoadingScreen() {
 }
 
 @Composable
-private fun MoviesList(movies: List<Movie>) {
+private fun MoviesList(movies: List<Movie>, onMovieClick: (Movie) -> Unit) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        contentPadding = PaddingValues(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         itemsIndexed(movies){ index, item ->
             MovieItem(
                 movie = item,
                 onClick = { selectedMovie ->
-                    // Navigation to detail screen will be handled here
-                    // For now, this is a placeholder for navigation logic
+                    onMovieClick(selectedMovie)
                 }
             )
         }
@@ -262,7 +264,7 @@ private fun MovieItem(
             .fillMaxWidth()
             .height(180.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
         ),
@@ -348,4 +350,3 @@ private fun MovieItem(
         }
     }
 }
-

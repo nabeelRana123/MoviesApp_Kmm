@@ -12,6 +12,7 @@ lifecycleViewmodel = "2.8.4"
 coil = "3.2.0"
 koinCore = "4.0.0"
 glancePreview = "1.1.1"
+navigation = "2.8.4"
 
 [libraries]
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
@@ -42,6 +43,9 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt:coil-network-ktor", version.ref = "coil" }
 
+# Navigation
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 androidx-glance-preview = { group = "androidx.glance", name = "glance-preview", version.ref = "glancePreview" }
 
@@ -54,4 +58,3 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-
