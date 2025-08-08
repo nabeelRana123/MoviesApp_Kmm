@@ -1,5 +1,6 @@
 package com.dev.moviesappkmm.network
 
+import com.dev.moviesappkmm.config.getApiKey
 import com.dev.moviesappkmm.data.Movie
 import com.dev.moviesappkmm.data.MoviesResponse
 import io.ktor.client.HttpClient
@@ -17,19 +18,18 @@ class MovieApiServiceImpl(
     private val client: HttpClient
 ) : MovieApiService {
 
-    private val apiKey = "e2d116616ef2f37b19062d589dd1bbe6"
     private val baseUrl = "https://api.themoviedb.org/3"
 
     override suspend fun getPopularMovies(page: Int): MoviesResponse {
         return client.get("$baseUrl/movie/popular") {
-            parameter("api_key", apiKey)
+            parameter("api_key", getApiKey())
             parameter("page", page)
         }.body()
     }
 
     override suspend fun searchMovies(query: String, page: Int): MoviesResponse {
         return client.get("$baseUrl/search/movie") {
-            parameter("api_key", apiKey)
+            parameter("api_key", getApiKey())
             parameter("query", query)
             parameter("page", page)
         }.body()
@@ -37,7 +37,7 @@ class MovieApiServiceImpl(
 
     override suspend fun getMovieDetails(movieId: Int): Movie {
         return client.get("$baseUrl/movie/$movieId") {
-            parameter("api_key", apiKey)
+            parameter("api_key", getApiKey())
         }.body()
     }
 }

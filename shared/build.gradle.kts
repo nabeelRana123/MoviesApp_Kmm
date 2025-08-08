@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.invoke
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +8,15 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     kotlin("plugin.serialization") version "2.0.0"
 }
+
+// Load API key from local.properties
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val tmdbApiKey = localProperties.getProperty("tmdb.api.key") ?: "your_api_key_here"
 
 kotlin {
     androidTarget {
@@ -97,10 +107,16 @@ android {
     compileSdk = 35
     defaultConfig {
         minSdk = 24
+
+        // Make API key available as a build config field
+        buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
